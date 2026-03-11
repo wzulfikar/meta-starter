@@ -1,6 +1,9 @@
+- use react ignite boilerplate
+- use bun
 - use biome
 - use zed for editor
 - use eas for deployment
+- use lefthook instead of husky
 
 Add these packages (use `bun add <packages>`):
 

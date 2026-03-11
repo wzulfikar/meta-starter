@@ -1,0 +1,17 @@
+# Refer for explanation to following link:
+# https://lefthook.dev/configuration/
+
+pre-commit:
+  parallel: true
+  jobs:
+    - run: bun fix {staged_files}
+      glob: "*.{ts,tsx}"
+
+pre-push:
+  parallel: true
+  jobs:
+    - run: bun type-check
+      glob: "*.{ts,tsx}"
+
+    - run: bun test
+      glob: "*.{ts,tsx}"

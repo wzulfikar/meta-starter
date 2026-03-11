@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod +x /Users/wzulfikar/code/github/starter-docs/sync.sh)",
+      "Bash(./sync.sh)"
+    ]
+  }
+}
