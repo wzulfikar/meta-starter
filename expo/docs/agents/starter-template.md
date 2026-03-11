@@ -18,3 +18,4 @@ Add these packages (use `bun add <packages>`):
 - @reactuses/core for hook utilities
 - @gorhom/bottom-sheet for bottom sheet
 - es-toolkit for utilities (lodash replacement)
+- react-native-enriched-markdown for markdown
