@@ -19,3 +19,10 @@ Add these packages (use `bun add <packages>`):
 - @gorhom/bottom-sheet for bottom sheet
 - es-toolkit for utilities (lodash replacement)
 - react-native-enriched-markdown for markdown
+- zod
+- expo-crypto or react-native-get-random-values
+
+
+## Tips
+
+- it's possible to not require user for authentication. instead, generate uuid client side and use hmac for short lived token. it's not fool proof since the hmac secret is still stored locally, but increases the difficulty to spoof. it protects from MITM.
