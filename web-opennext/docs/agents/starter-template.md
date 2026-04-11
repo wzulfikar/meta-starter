@@ -32,6 +32,9 @@ Use bun (`bun i <package_name>`) and install these packages:
 - server-only
 - saas-maker
 - ahooks
+- motion
+- @icons-pack/react-simple-icons
+- lucide-animated
 
 ## Update package.json
 
@@ -47,3 +50,15 @@ Add these scripts:
 
 - Replace axios with ky
 - Create `AGENTS.md` in project's root: understand the codebase structure and common pattern and include it in the file. Highlight the tech stack: bun, biome, nextjs, tailwind, shadcn, zod, lucide-react (for icons).
+
+## Icons and animation
+
+- `lucide-react` — general UI icons (already in supa-next-starter)
+- `lucide-animated` — animated variants of lucide icons (https://lucide-animated.com)
+- `@icons-pack/react-simple-icons` — brand SVG icons (GitHub, Twitter, Stripe, etc.)
+- `motion` — animation library (https://motion.dev); replaces framer-motion
+
+## Toast and drawers
+
+- `sonner` — toast notifications (already included above)
+- `vaul` — bottom sheet / drawer for web (already included above)
