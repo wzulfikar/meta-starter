@@ -89,6 +89,7 @@ The `patterns/` folder contains cross-platform patterns you should apply when se
 | `patterns/parse-dont-validate-with-zod.md` | All platforms — parse at layer boundaries with Zod, trust data downstream |
 | `patterns/react-query-cache.md` | Web / Mobile — show cached data instantly, load indicator on first fetch only, clear on logout |
 | `patterns/expo-minimal-screens.md` | Mobile — two required screens (Home, Settings) and composable settings UI components |
+| `patterns/services.md` | All platforms — recommended services with generous free tiers (Cloudflare, Supabase, Plunk, Trigger.dev, Autumn) |
 
 ---
 
