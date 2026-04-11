@@ -1,12 +1,13 @@
 # React Query Cache Pattern
 
-The goal is instant-feeling navigation. Data loads once, gets cached, and subsequent views show immediately from cache while React Query quietly refreshes in the background.
+The goal is instant-feeling navigation and interaction. Data loads once, gets cached, and subsequent views show immediately. Mutations feel instant too — update the cache first, let the server catch up in the background.
 
 ## The rules
 
 1. **Show a loading indicator only on first load** — when there is no cached data yet
 2. **On subsequent visits show cached data immediately** — no spinner, no layout shift. Stale data is fine; React Query refetches in the background and updates the UI if the new data differs
-3. **Clear the cache on logout** — so the next user session starts fresh
+3. **Use optimistic updates for mutations** — apply the change to the cache immediately on user action, before the server responds
+4. **Clear the cache on logout** — so the next user session starts fresh
 
 ## QueryClient setup
 
@@ -109,6 +110,84 @@ function PostLink({ postId }: { postId: string }) {
 }
 ```
 
+## Optimistic updates with setQueryData
+
+Reads feel instant because of caching. Mutations can feel instant too — update the cache immediately when the user acts, then let the server confirm in the background. If the server fails, roll back.
+
+```ts
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+
+function useLikePost() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (postId: string) => likePost(postId),
+
+    onMutate: async (postId) => {
+      // Cancel any in-flight refetches so they don't overwrite the optimistic update
+      await queryClient.cancelQueries({ queryKey: ["posts"] })
+
+      // Snapshot the current cache value for rollback
+      const previous = queryClient.getQueryData<Post[]>(["posts"])
+
+      // Apply the optimistic update immediately
+      queryClient.setQueryData<Post[]>(["posts"], (old) =>
+        old?.map((post) =>
+          post.id === postId ? { ...post, liked: true, likes: post.likes + 1 } : post
+        )
+      )
+
+      return { previous }  // returned context is passed to onError
+    },
+
+    onError: (_err, _postId, context) => {
+      // Roll back to the snapshot on failure
+      if (context?.previous) {
+        queryClient.setQueryData(["posts"], context.previous)
+      }
+    },
+
+    onSettled: () => {
+      // Refetch to sync with the server regardless of success or failure
+      queryClient.invalidateQueries({ queryKey: ["posts"] })
+    },
+  })
+}
+```
+
+Usage in a component — no loading state needed for the interaction itself:
+
+```tsx
+function PostCard({ post }: { post: Post }) {
+  const likePost = useLikePost()
+
+  return (
+    <button onClick={() => likePost.mutate(post.id)}>
+      {post.liked ? "♥" : "♡"} {post.likes}
+    </button>
+  )
+}
+```
+
+The user taps, the count increments instantly, and the server request happens silently. If it fails, the count rolls back.
+
+### setQueryData for simpler cases
+
+When you don't need rollback (e.g. adding a new item to a list and you'll refetch anyway), skip `onMutate` and just update the cache in `onSuccess`:
+
+```ts
+useMutation({
+  mutationFn: createPost,
+  onSuccess: (newPost) => {
+    queryClient.setQueryData<Post[]>(["posts"], (old) =>
+      old ? [newPost, ...old] : [newPost]
+    )
+  },
+})
+```
+
+Use the full `onMutate` / `onError` rollback pattern when the action is visible and reversing it would be jarring (likes, toggles, deletes). Use the simpler `onSuccess` pattern when the mutation creates new data and a brief delay before it appears is acceptable.
+
 ## Summary
 
 | Situation | What to show |
@@ -117,3 +196,5 @@ function PostLink({ postId }: { postId: string }) {
 | `isFetching && !isPending` (background refresh) | Optional subtle indicator, always show cached content |
 | Data loaded, not fetching | Content, nothing else |
 | Logout | `queryClient.clear()` before navigating away |
+| Mutation (visible toggle/delete) | `setQueryData` in `onMutate` + rollback in `onError` |
+| Mutation (new item creation) | `setQueryData` in `onSuccess`, simpler, no rollback needed |
