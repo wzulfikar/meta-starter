@@ -277,6 +277,63 @@ const posts = await sanity.fetch(`*[_type == "post"] | order(publishedAt desc) {
 
 **Free tier highlights:** Generous free plan — 3 users, 2 datasets, 500k API requests/month, 10 GB bandwidth.
 
+## Sentry
+
+Error reporting and monitoring. Captures unhandled exceptions and crashes in production, groups them by root cause, and gives you a stack trace with request context so you can reproduce and fix issues fast.
+
+**What it covers:**
+- **Error reporting** — automatic capture of unhandled errors and promise rejections; manual capture via `Sentry.captureException` for handled errors you still want to track
+- **Performance monitoring** — traces slow requests, database queries, and frontend interactions
+- **User feedback widget** (optional) — embed a feedback button or crash dialog so users can submit bug reports directly from your app, attached to the relevant error event
+
+**Next.js setup:**
+
+```bash
+npx @sentry/wizard@latest -i nextjs
+```
+
+The wizard creates `sentry.client.config.ts`, `sentry.server.config.ts`, and `sentry.edge.config.ts` with sensible defaults. Commit these files.
+
+**Manual error capture:**
+
+```ts
+import * as Sentry from "@sentry/nextjs"
+
+try {
+  await riskyOperation()
+} catch (err) {
+  Sentry.captureException(err)
+  throw err
+}
+```
+
+**User feedback widget** — attach to a button or show automatically after an error:
+
+```tsx
+import * as Sentry from "@sentry/nextjs"
+
+// Programmatic — open the dialog from anywhere
+Sentry.showReportDialog({ eventId: Sentry.lastEventId() })
+
+// Or use the pre-built widget component (Sentry SDK v8+)
+import { FeedbackButton } from "@sentry/nextjs"
+
+export function SupportButton() {
+  return <FeedbackButton />
+}
+```
+
+The widget collects a name, email, and description and attaches the submission to the corresponding error event in your Sentry dashboard.
+
+**Env vars needed:**
+```
+SENTRY_DSN=https://<key>@<org>.ingest.sentry.io/<project>
+SENTRY_ORG=<org-slug>          # for source map uploads at build time
+SENTRY_PROJECT=<project-slug>  # for source map uploads at build time
+```
+
+**Free tier highlights:** 5,000 errors/month, 10k performance transactions, 1 team member on the free plan — enough to instrument an early-stage app in production.
+
 ## local-tunnel
 
 Exposes a local HTTP server to the public internet over a secure tunnel — useful for testing webhooks, sharing a dev build, or connecting local services to third-party APIs that require a real URL.
@@ -314,4 +371,5 @@ Both tools serve the same purpose — pick whichever fits your workflow. `localt
 | Trigger.dev | Background jobs, user schedules | Free for dev; generous production tier |
 | Autumn | Billing, usage tracking | Free (Stripe fees only when charging) |
 | Sanity | Headless CMS, structured content | 3 users, 500k API req/month, 10 GB bandwidth |
+| Sentry | Error reporting, performance monitoring, user feedback | 5,000 errors/month, 10k perf transactions |
 | local-tunnel / ngrok | Expose local server to the internet | local-tunnel: free, no account; ngrok: free tier available |
