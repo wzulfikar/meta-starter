@@ -34,40 +34,8 @@ Sufficient for most projects. Declare the expected keys, assert they exist at st
 
 ```ts
 // src/env.server.ts
-
-// Runtime flag — set this in CF dashboard or deployment platform
-export const IS_CF_RUNTIME = !!process.env.IS_CF_RUNTIME
-
 export const env = {
-  DEVICE_TOKEN_SECRET: process.env.DEVICE_TOKEN_SECRET!,
-  AUTUMN_SECRET_KEY: process.env.AUTUMN_SECRET_KEY!,
-  DEEPGRAM_API_KEY: process.env.DEEPGRAM_API_KEY!,
-  OPENAI_API_KEY: process.env.OPENAI_API_KEY!,
-  PLUNK_API_KEY: process.env.PLUNK_API_KEY!,
-  REVENUECAT_SECRET_KEY: process.env.REVENUECAT_SECRET_KEY!,
-  REVENUECAT_PROJECT_ID: process.env.REVENUECAT_PROJECT_ID!,
-  // Optional — absence is allowed
-  DATAFAST_API_KEY: process.env.DATAFAST_API_KEY,
-}
-
-if (IS_CF_RUNTIME) {
-  for (const key in env) {
-    if (!env[key as keyof typeof env]) {
-      throw new Error(`Missing environment variable: ${key}`)
-    }
-  }
-}
-```
-
-The `IS_CF_RUNTIME` guard matters because Cloudflare Workers bind secrets differently from Node.js. During a local `next dev` run, `process.env` is populated from `.env`. In a deployed Worker, it isn't — variables come from the CF runtime bindings. The validation loop only runs where the platform actually provides bindings.
-
-For a purely Node.js app (Vercel, Railway, etc.), skip the guard and run the loop unconditionally.
-
-```ts
-// src/env.server.ts — Node.js / Vercel variant
-export const env = {
-  DATABASE_URL: process.env.DATABASE_URL!,
-  OPENAI_API_KEY: process.env.OPENAI_API_KEY!,
+  SOME_SECRET: process.env.SOME_SECRET!,
 }
 
 for (const key in env) {
