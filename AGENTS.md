@@ -84,6 +84,7 @@ The `patterns/` folder contains cross-platform patterns you should apply when se
 | `patterns/zed.md` | All platforms — `.zed/settings.json` for biome auto-format on save |
 | `patterns/agent-tools.md` | All platforms — essential MCP tools for browser, simulator, and GitHub |
 | `patterns/product-demo.md` | Mobile — RocketSim, TinyShot, Butterkit for recordings, mockups, and App Store screenshots |
+| `patterns/expo-rapid-iteration.md` | Mobile — internal distribution via TestFlight/Play Store + OTA updates with EAS |
 
 ---
 
