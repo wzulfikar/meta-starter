@@ -1,19 +1,19 @@
 # Recommended Services
 
-A curated stack optimized for generous free tiers — you can go from zero to a production app with team collaboration before spending a dollar. Each service was chosen because its free tier is genuinely useful, not crippled.
+A curated stack optimized for generous free tiers; you can go from zero to a production app with team collaboration before spending a dollar. Each service was chosen because its free tier is genuinely useful, not crippled.
 
 ## Cloudflare
 
 Handles everything at the infrastructure layer.
 
 **What it covers:**
-- **Hosting** — static pages (Pages) and Next.js apps via [OpenNext](https://opennext.js.org/cloudflare) on Workers
-- **CDN + DDoS** — global edge network included on all plans, no configuration required
-- **WAF** — web application firewall with managed rulesets on free plan
-- **Rate limiting** — Workers-level rate limiting via the Rate Limiting API or `cloudflare:workers` bindings
-- **Cron** — Workers Cron Triggers for scheduled tasks (up to 5 on free plan)
-- **Email routing** — forward email from your domain to any inbox, free
-- **Domain registration** — at-cost pricing, no markup over ICANN fees
+- **Hosting**: static pages (Pages) and Next.js apps via [OpenNext](https://opennext.js.org/cloudflare) on Workers
+- **CDN + DDoS**: global edge network included on all plans, no configuration required
+- **WAF**: web application firewall with managed rulesets on free plan
+- **Rate limiting**: Workers-level rate limiting via the Rate Limiting API or `cloudflare:workers` bindings
+- **Cron**: Workers Cron Triggers for scheduled tasks (up to 5 on free plan)
+- **Email routing**: forward email from your domain to any inbox, free
+- **Domain registration**: at-cost pricing, no markup over ICANN fees
 
 **Free tier highlights:** 100k Workers requests/day, unlimited Pages builds, unlimited static sites, email routing free.
 
@@ -44,9 +44,9 @@ export default config
 Covers the entire data layer so you don't need to run your own Postgres or build auth from scratch.
 
 **What it covers:**
-- **Auth** — email/password, magic links, OAuth (Google, GitHub, etc.), phone OTP, session management, JWTs
-- **PostgreSQL** — managed Postgres with row-level security, extensions, and the Supabase client for direct queries
-- **Realtime** — subscribe to database changes over WebSockets; built on Postgres logical replication
+- **Auth**: email/password, magic links, OAuth (Google, GitHub, etc.), phone OTP, session management, JWTs
+- **PostgreSQL**: managed Postgres with row-level security, extensions, and the Supabase client for direct queries
+- **Realtime**: subscribe to database changes over WebSockets; built on Postgres logical replication
 
 **Free tier highlights:** 2 active projects, 500 MB database, 50k monthly active users, 50 MB file storage. Enough for an early-stage product with real users.
 
@@ -64,8 +64,8 @@ Use the anon key in the browser/client. Use the service role key only in server-
 Handles both transactional emails (receipts, password resets, notifications) and marketing campaigns from a single platform.
 
 **What it covers:**
-- **Transactional email** — send via REST API; ideal for triggered emails from your app
-- **Campaigns** — broadcast emails to segments of your user list from the dashboard
+- **Transactional email**: send via REST API; ideal for triggered emails from your app
+- **Campaigns**: broadcast emails to segments of your user list from the dashboard
 
 **Free tier highlights:** 3,000 emails/month free, no credit card required.
 
@@ -116,7 +116,7 @@ export async function trackEvent(params: {
 }
 ```
 
-Call site — render the component to HTML, then send:
+Call site: render the component to HTML, then send:
 
 ```ts
 import { render } from "@react-email/render"
@@ -140,9 +140,9 @@ PLUNK_SECRET_KEY=<secret-key>
 Runs background work outside the request/response cycle. Use it for anything that's too slow, too unreliable, or too long-running to do inline.
 
 **What it covers:**
-- **Async background jobs** — offload work that shouldn't block the user (sending emails, processing uploads, calling slow third-party APIs)
-- **User-generated schedules** — let users define their own recurring tasks (e.g. "run this report every Monday at 9am") using Trigger's schedule API
-- **Durable execution** — automatic retries, cancellation, and run history built in
+- **Async background jobs**: offload work that shouldn't block the user (sending emails, processing uploads, calling slow third-party APIs)
+- **User-generated schedules**: let users define their own recurring tasks (e.g. "run this report every Monday at 9am") using Trigger's schedule API
+- **Durable execution**: automatic retries, cancellation, and run history built in
 
 **Free tier highlights:** Free for development; production free tier covers a meaningful number of runs per month for early-stage apps.
 
@@ -182,12 +182,12 @@ TRIGGER_SECRET_KEY=<secret-key>
 
 ## Autumn
 
-Handles billing and usage tracking so you can monetize without building a payment system from scratch. Sits on top of Stripe — Autumn manages the plan logic and usage metering; Stripe handles the actual money movement.
+Handles billing and usage tracking so you can monetize without building a payment system from scratch. Sits on top of Stripe; Autumn manages the plan logic and usage metering, and Stripe handles the actual money movement.
 
 **What it covers:**
-- **Billing** — subscription plans, one-time charges, free trials, plan upgrades/downgrades
-- **Usage tracking** — metered billing based on what your users actually consume (API calls, seats, storage, etc.)
-- **Entitlement checks** — ask Autumn if a user is allowed to do something based on their plan
+- **Billing**: subscription plans, one-time charges, free trials, plan upgrades/downgrades
+- **Usage tracking**: metered billing based on what your users actually consume (API calls, seats, storage, etc.)
+- **Entitlement checks**: ask Autumn if a user is allowed to do something based on their plan
 
 **Free tier highlights:** Free to use; you only pay Stripe's standard processing fees when you charge customers.
 
@@ -235,12 +235,12 @@ AUTUMN_SECRET_KEY=<secret-key>
 Headless CMS for structured content. The `sanity-studio` folder lives in your repo so schema changes are version-controlled and reviewable like any other code. Once the studio is deployed, editors can manage content from the Sanity dashboard without touching the codebase.
 
 **What it covers:**
-- **Structured content** — define schemas in code; content is stored and served via Sanity's CDN (GROQ queries or GraphQL)
-- **Local studio** — run the Sanity Studio locally to iterate on schemas and preview content before publishing
-- **Hosted studio** — deploy the studio to `your-project.sanity.studio` so non-technical editors can manage content directly from the Sanity dashboard
+- **Structured content**: define schemas in code; content is stored and served via Sanity's CDN (GROQ queries or GraphQL)
+- **Local studio**: run the Sanity Studio locally to iterate on schemas and preview content before publishing
+- **Hosted studio**: deploy the studio to `your-project.sanity.studio` so non-technical editors can manage content directly from the Sanity dashboard
 
 **Workflow:**
-- Schema lives in `sanity-studio/` and is tracked in Git — schema changes go through normal code review
+- Schema lives in `sanity-studio/` and is tracked in Git; schema changes go through normal code review
 - Run `npm run dev` inside `sanity-studio/` to develop schemas locally
 - Deploy schema + studio with `npx sanity deploy` when changes are ready
 - Editors then use the hosted dashboard; no local setup required for content editing
@@ -275,16 +275,16 @@ const posts = await sanity.fetch(`*[_type == "post"] | order(publishedAt desc) {
 }`)
 ```
 
-**Free tier highlights:** Generous free plan — 3 users, 2 datasets, 500k API requests/month, 10 GB bandwidth.
+**Free tier highlights:** Generous free plan: 3 users, 2 datasets, 500k API requests/month, 10 GB bandwidth.
 
 ## Sentry
 
 Error reporting and monitoring. Captures unhandled exceptions and crashes in production, groups them by root cause, and gives you a stack trace with request context so you can reproduce and fix issues fast.
 
 **What it covers:**
-- **Error reporting** — automatic capture of unhandled errors and promise rejections; manual capture via `Sentry.captureException` for handled errors you still want to track
-- **Performance monitoring** — traces slow requests, database queries, and frontend interactions
-- **User feedback widget** (optional) — embed a feedback button or crash dialog so users can submit bug reports directly from your app, attached to the relevant error event
+- **Error reporting**: automatic capture of unhandled errors and promise rejections; manual capture via `Sentry.captureException` for handled errors you still want to track
+- **Performance monitoring**: traces slow requests, database queries, and frontend interactions
+- **User feedback widget** (optional): embed a feedback button or crash dialog so users can submit bug reports directly from your app, attached to the relevant error event
 
 **Next.js setup:**
 
@@ -307,12 +307,12 @@ try {
 }
 ```
 
-**User feedback widget** — attach to a button or show automatically after an error:
+**User feedback widget**: attach to a button or show automatically after an error:
 
 ```tsx
 import * as Sentry from "@sentry/nextjs"
 
-// Programmatic — open the dialog from anywhere
+// Programmatic: open the dialog from anywhere
 Sentry.showReportDialog({ eventId: Sentry.lastEventId() })
 
 // Or use the pre-built widget component (Sentry SDK v8+)
@@ -332,11 +332,11 @@ SENTRY_ORG=<org-slug>          # for source map uploads at build time
 SENTRY_PROJECT=<project-slug>  # for source map uploads at build time
 ```
 
-**Free tier highlights:** 5,000 errors/month, 10k performance transactions, 1 team member on the free plan — enough to instrument an early-stage app in production.
+**Free tier highlights:** 5,000 errors/month, 10k performance transactions, 1 team member on the free plan; enough to instrument an early-stage app in production.
 
 ## local-tunnel
 
-Exposes a local HTTP server to the public internet over a secure tunnel — useful for testing webhooks, sharing a dev build, or connecting local services to third-party APIs that require a real URL.
+Exposes a local HTTP server to the public internet over a secure tunnel, useful for testing webhooks, sharing a dev build, or connecting local services to third-party APIs that require a real URL.
 
 ```bash
 npx localtunnel --port 3000
@@ -357,7 +357,7 @@ ngrok http 3000
 # → https://abc123.ngrok-free.app
 ```
 
-Both tools serve the same purpose — pick whichever fits your workflow. `localtunnel` requires no account; `ngrok` requires a free account but offers more features (request replay, TLS termination config, etc.).
+Both tools serve the same purpose; pick whichever fits your workflow. `localtunnel` requires no account; `ngrok` requires a free account but offers more features (request replay, TLS termination config, etc.).
 
 ---
 

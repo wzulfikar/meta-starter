@@ -8,12 +8,12 @@ Determine which mode to run based on `$ARGUMENTS`:
 
 If `$ARGUMENTS` is empty, introduce meta-starter to the user:
 
-> **meta-starter** is a curated inventory of patterns, tooling decisions, and architectural choices accumulated from real projects. It scaffolds new projects using official CLIs and layers opinionated defaults on top — so the base template stays up to date and the repo only stores what's actually custom.
+> **meta-starter** is a curated inventory of patterns, tooling decisions, and architectural choices accumulated from real projects. It scaffolds new projects using official CLIs and layers opinionated defaults on top; the base template stays up to date and the repo only stores what's actually custom.
 >
 > **Usage:**
-> - `/meta-starter init` — start a new project (web, mobile, or desktop)
-> - `/meta-starter update` — pull the latest meta-starter changes and see what's new
-> - `/meta-starter <question>` — ask anything about meta-starter's patterns, tooling, or decisions
+> - `/meta-starter init`: start a new project (web, mobile, or desktop)
+> - `/meta-starter update`: pull the latest meta-starter changes and see what's new
+> - `/meta-starter <question>`: ask anything about meta-starter's patterns, tooling, or decisions
 
 ---
 
@@ -21,13 +21,13 @@ If `$ARGUMENTS` is empty, introduce meta-starter to the user:
 
 If `$ARGUMENTS` is `init` (or starts with `init`):
 
-### Step 1 — Interview the developer
+### Step 1: Interview the developer
 
 Ask these questions (conversationally or all at once):
 
-1. **Project name** — what will it be called?
-2. **Project type** — web, mobile (iOS/Android), desktop, or a combination?
-3. **What does it do?** — a few sentences. What problem does it solve? Who uses it?
+1. **Project name**: what will it be called?
+2. **Project type**: web, mobile (iOS/Android), desktop, or a combination?
+3. **What does it do?**: a few sentences. What problem does it solve? Who uses it?
 4. **Which features do you need?**
    - User authentication (login/signup)
    - Database (persistent data storage)
@@ -36,7 +36,7 @@ Ask these questions (conversationally or all at once):
    - Public-facing API (with rate limiting)
    - Offline support (mobile only)
 
-### Step 2 — Scaffold with the official CLI
+### Step 2: Scaffold with the official CLI
 
 Based on the project type, run the appropriate command. The project is created **inside the current working directory** under a subfolder named after the project. Do NOT use `~/meta-starter` as the destination.
 
@@ -60,7 +60,7 @@ Creates under `<project-name>/`. Reference: https://github.com/Mahcks/wails-vite
 
 For combinations (e.g. web + mobile), scaffold each template separately into its own subfolder.
 
-### Step 3 — Apply meta-starter overlays
+### Step 3: Apply meta-starter overlays
 
 After scaffolding, copy the meta-starter template overlay on top of the generated project:
 
@@ -73,20 +73,20 @@ Where `<template-name>` is `web-opennext`, `mobile-expo`, or `desktop-wails`.
 Then follow the post-setup steps in the template's agent doc:
 - Web: `~/meta-starter/web-opennext/docs/agents/starter-template.md`
 - Mobile: `~/meta-starter/mobile-expo/docs/agents/starter-template.md`
-- Desktop: no starter-template doc — apply the invariants below directly
+- Desktop: no starter-template doc; apply the invariants below directly
 
-### Step 4 — Apply invariants (all projects)
+### Step 4: Apply invariants (all projects)
 
 These always apply, no exceptions:
-- **bun** — replace npm/pnpm as package manager and runtime
-- **biome** — replace eslint + prettier for linting and formatting
-- **lefthook** — replace husky for git hooks
-- **tsgo** — replace tsc (`bun add -d @typescript/native-preview`)
-- **ky** — replace axios or raw fetch for HTTP
-- **zod** — schema validation
-- **lucide-react** / **lucide-react-native** — icons
+- **bun**: replace npm/pnpm as package manager and runtime
+- **biome**: replace eslint + prettier for linting and formatting
+- **lefthook**: replace husky for git hooks
+- **tsgo**: replace tsc (`bun add -d @typescript/native-preview`)
+- **ky**: replace axios or raw fetch for HTTP
+- **zod**: schema validation
+- **lucide-react** / **lucide-react-native**: icons
 
-### Step 5 — Prune unneeded features
+### Step 5: Prune unneeded features
 
 For each feature the developer said they **don't need**, remove the relevant files and clean up imports and env var references:
 
@@ -97,29 +97,29 @@ For each feature the developer said they **don't need**, remove the relevant fil
 | Rate limiting | `src/server/routes/checkRateLimit.ts` and usages |
 | Auth middleware | `src/server/routes/parseAuth.ts` (if no authentication) |
 
-### Step 6 — Apply relevant patterns
+### Step 6: Apply relevant patterns
 
 Check `~/meta-starter/patterns/` and apply what's relevant:
 
 | Pattern | Applies to |
 |---------|-----------|
-| `lefthook-for-automated-maintenance.md` | All — biome on staged files, tsgo pre-push |
-| `safe-env.md` | All — validated env object, fail at startup |
-| `encrypted-secrets.md` | All — commit encrypted `.env.secrets` |
-| `package-json-scripts.md` | All — standard script names |
-| `icons.md` | All — lucide, lucide-animated, simple-icons |
-| `zed.md` | All — `.zed/settings.json` for biome auto-format |
-| `agent-tools.md` | All — MCP tools for browser, simulator, GitHub |
-| `thin-api-wrapper-with-ky.md` | All — ky wrapper for services without SDK |
-| `parse-dont-validate-with-zod.md` | All — parse at layer boundaries |
-| `react-query-cache.md` | Web / Mobile — cached data, load indicator, clear on logout |
-| `services.md` | All — reference for Cloudflare, Supabase, Plunk, Trigger.dev, Autumn, Sanity, Sentry |
-| `utilities.md` | All — p-queue, date-fns, nuqs |
-| `expo-rapid-iteration.md` | Mobile — TestFlight/Play Store + EAS OTA updates |
-| `expo-minimal-screens.md` | Mobile — Home + Settings screens |
-| `product-demo.md` | Mobile — RocketSim, TinyShot, Butterkit |
+| `lefthook-for-automated-maintenance.md` | All: biome on staged files, tsgo pre-push |
+| `safe-env.md` | All: validated env object, fail at startup |
+| `encrypted-secrets.md` | All: commit encrypted `.env.secrets` |
+| `package-json-scripts.md` | All: standard script names |
+| `icons.md` | All: lucide, lucide-animated, simple-icons |
+| `zed.md` | All: `.zed/settings.json` for biome auto-format |
+| `agent-tools.md` | All: MCP tools for browser, simulator, GitHub |
+| `thin-api-wrapper-with-ky.md` | All: ky wrapper for services without SDK |
+| `parse-dont-validate-with-zod.md` | All: parse at layer boundaries |
+| `react-query-cache.md` | Web / Mobile: cached data, load indicator, clear on logout |
+| `services.md` | All: reference for Cloudflare, Supabase, Plunk, Trigger.dev, Autumn, Sanity, Sentry |
+| `utilities.md` | All: p-queue, date-fns, nuqs |
+| `expo-rapid-iteration.md` | Mobile: TestFlight/Play Store + EAS OTA updates |
+| `expo-minimal-screens.md` | Mobile: Home + Settings screens |
+| `product-demo.md` | Mobile: RocketSim, TinyShot, Butterkit |
 
-### Step 7 — Finalise
+### Step 7: Finalise
 
 1. Update `package.json` with the correct project name
 2. Create `AGENTS.md` in the new project root summarising:

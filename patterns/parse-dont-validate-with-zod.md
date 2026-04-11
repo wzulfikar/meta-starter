@@ -5,7 +5,7 @@ Parse untrusted input at layer boundaries and let it flow as trusted, typed data
 ## The idea
 
 **Validation** checks whether data is correct and returns a boolean.
-**Parsing** checks whether data is correct and returns it in the right shape — or throws.
+**Parsing** checks whether data is correct and returns it in the right shape, or throws.
 
 The difference is that after parsing, the type system carries the proof. You don't need to re-check or re-cast downstream. Code inside the boundary can safely assume the data is what it claims to be.
 
@@ -15,8 +15,8 @@ function isValidUser(data: unknown): boolean {
   return typeof data === "object" && data !== null && "id" in data
 }
 
-// Parsing: you get back a typed value, or an error — no in-between
-const user = UserSchema.parse(data) // User — or throws ZodError
+// Parsing: you get back a typed value, or an error; no in-between
+const user = UserSchema.parse(data) // User, or throws ZodError
 ```
 
 ## Boundaries
@@ -92,7 +92,7 @@ async function main() {
     })
     .parse()
 
-  // args.to, args.subject, args.dry — typed, validated, with defaults applied
+  // args.to, args.subject, args.dry: typed, validated, with defaults applied
   if (args.dry) {
     console.log("Dry run:", args)
     return
@@ -113,7 +113,7 @@ bun commands/send-email.ts --to user@example.com --subject "Hello" --dry
 
 ## Coercion and transformation at the boundary
 
-The boundary is also the right place to coerce and normalise — not deeper in the code.
+The boundary is also the right place to coerce and normalise, not deeper in the code.
 
 ```ts
 const QuerySchema = z.object({
@@ -131,14 +131,14 @@ After parsing, `page` is a `number`, not a `string`. You never write `Number(par
 Once input is parsed, treat it as trusted. Don't add defensive checks for things the schema already guarantees:
 
 ```ts
-// After parsing with z.string().min(1) — don't do this:
+// After parsing with z.string().min(1): don't do this:
 if (!input.title || input.title.length === 0) { ... }
 
 // The schema already made this impossible. Trust it.
 await db.posts.create({ data: { title: input.title } })
 ```
 
-Adding redundant checks after parsing defeats the purpose — it suggests the schema isn't trusted, which leads to defensive code noise throughout the codebase.
+Adding redundant checks after parsing defeats the purpose; it suggests the schema isn't trusted, which leads to defensive code noise throughout the codebase.
 
 ## External API responses
 
@@ -159,4 +159,4 @@ export async function getRepo(owner: string, name: string) {
 }
 ```
 
-If the external API changes shape, the parse throws at the boundary — not somewhere deep in the UI where a missing field causes a confusing crash.
+If the external API changes shape, the parse throws at the boundary, not somewhere deep in the UI where a missing field causes a confusing crash.

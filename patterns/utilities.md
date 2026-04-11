@@ -4,7 +4,7 @@ Small, focused packages that handle common problems well. Each one does one thin
 
 ## p-queue
 
-Limits how many async operations run at the same time. Useful when you're processing a list of items and can't fire them all in parallel — rate-limited APIs, database writes under load, bulk file processing.
+Limits how many async operations run at the same time. Useful when you're processing a list of items and can't fire them all in parallel: rate-limited APIs, database writes under load, bulk file processing.
 
 ```ts
 import PQueue from "p-queue"
@@ -36,14 +36,14 @@ console.log(queue.pending) // running
 
 **Related utilities from the same family:**
 
-- **p-limit** — simpler version if you only need a concurrency cap with no queue management:
+- **p-limit**: simpler version if you only need a concurrency cap with no queue management:
   ```ts
   import pLimit from "p-limit"
   const limit = pLimit(3)
   const results = await Promise.all(items.map((item) => limit(() => process(item))))
   ```
 
-- **p-retry** — retry a failing async operation with exponential backoff:
+- **p-retry**: retry a failing async operation with exponential backoff:
   ```ts
   import pRetry from "p-retry"
   const data = await pRetry(() => fetchFromUnreliableApi(), { retries: 4 })
@@ -53,7 +53,7 @@ Use `p-queue` when you need a full queue with pause/resume and drain events. Use
 
 ## date-fns
 
-A modular date utility library. Each function is a pure, tree-shakeable import — no bloated class instances, no global state.
+A modular date utility library. Each function is a pure, tree-shakeable import, no bloated class instances, no global state.
 
 **Formatting:**
 
@@ -98,7 +98,7 @@ formatInTimeZone(new Date(), "America/New_York", "MMM d, yyyy HH:mm zzz")
 
 ## nuqs
 
-Synchronises React state with URL search params. The URL becomes the source of truth — filters, pagination, tabs, and other UI state survive page refreshes and are shareable as links.
+Synchronises React state with URL search params. The URL becomes the source of truth: filters, pagination, tabs, and other UI state survive page refreshes and are shareable as links.
 
 **Basic usage:**
 
@@ -146,7 +146,7 @@ const [filters, setFilters] = useQueryStates({
 setFilters({ page: 1, status: "active" })
 ```
 
-**Next.js App Router setup** — wrap your layout with the nuqs adapter:
+**Next.js App Router setup**: wrap your layout with the nuqs adapter:
 
 ```tsx
 // app/layout.tsx
@@ -163,4 +163,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-nuqs supports Next.js (App Router and Pages), React Router, and Remix. Pick the matching adapter — the `useQueryState` API is identical across all of them.
+nuqs supports Next.js (App Router and Pages), React Router, and Remix. Pick the matching adapter; the `useQueryState` API is identical across all of them.

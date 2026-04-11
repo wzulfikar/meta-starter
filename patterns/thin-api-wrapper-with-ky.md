@@ -1,6 +1,6 @@
 # Thin API Wrapper with ky
 
-When you need a few endpoints from a service — especially one without an SDK — don't install a heavy client library or write raw `fetch` calls. Create a thin wrapper with `ky`.
+When you need a few endpoints from a service, especially one without an SDK, don't install a heavy client library or write raw `fetch` calls. Create a thin wrapper with `ky`.
 
 ## Why ky over fetch
 
@@ -36,7 +36,7 @@ export async function sendEmail(params: SendEmailParams) {
 }
 ```
 
-That's the whole wrapper — one `ky.create` instance, one exported function per endpoint used.
+That's the whole wrapper: one `ky.create` instance, one exported function per endpoint used.
 
 ## Dynamic auth with beforeRequest hooks
 
@@ -115,8 +115,8 @@ export async function createItem(data: NewItem) {
 
 ## When not to use this pattern
 
-- The service has a well-maintained SDK that covers your use case — use the SDK
-- You need more than ~5–6 endpoints — at that point an SDK or generated client (e.g. from OpenAPI) is worth the setup cost
+- The service has a well-maintained SDK that covers your use case: use the SDK
+- You need more than ~5–6 endpoints; at that point an SDK or generated client (e.g. from OpenAPI) is worth the setup cost
 - The service requires complex request signing or pagination that a thin wrapper will recreate poorly
 
 ## File structure
@@ -130,4 +130,4 @@ src/
     some-service.ts  # anything without an SDK
 ```
 
-One file per service. Import directly from the file, not through a barrel export — keeps tree-shaking clean on the server bundle.
+One file per service. Import directly from the file, not through a barrel export; this keeps tree-shaking clean on the server bundle.

@@ -4,17 +4,17 @@ Never read from `process.env` directly in application code. Import a validated e
 
 ## The idea
 
-`process.env` values are all `string | undefined`. TypeScript won't catch a missing key — the code compiles fine and blows up in production. A validated env module solves this in two ways:
+`process.env` values are all `string | undefined`. TypeScript won't catch a missing key; the code compiles fine and blows up in production. A validated env module solves this in two ways:
 
-1. **Startup validation** — missing required variables throw immediately when the process starts, not mid-request
-2. **Typed access** — `env.OPENAI_API_KEY` is `string`, not `string | undefined`, so no casting or nullish coalescing needed downstream
+1. **Startup validation**: missing required variables throw immediately when the process starts, not mid-request
+2. **Typed access**: `env.OPENAI_API_KEY` is `string`, not `string | undefined`, so no casting or nullish coalescing needed downstream
 
 ```ts
-// Without this pattern — silent failure
-const apiKey = process.env.OPENAI_API_KEY // string | undefined — could be undefined
+// Without this pattern: silent failure
+const apiKey = process.env.OPENAI_API_KEY // string | undefined: could be undefined
 await openai.chat({ key: apiKey! })       // ! is a lie; blows up at runtime
 
-// With this pattern — fail loud, fail early
+// With this pattern: fail loud, fail early
 import { env } from "@/env.server"
 await openai.chat({ key: env.OPENAI_API_KEY }) // always a string
 ```
@@ -28,7 +28,7 @@ await openai.chat({ key: env.OPENAI_API_KEY }) // always a string
 
 Never import `env.server` from client-side code. The build will include the secrets in the bundle.
 
-## Simple approach — a validated object
+## Simple approach: a validated object
 
 Sufficient for most projects. Declare the expected keys, assert they exist at startup, export a typed object.
 
@@ -64,7 +64,7 @@ for (const key in env) {
 }
 ```
 
-## t3-env — when you want more strictness
+## t3-env: when you want more strictness
 
 [t3-env](https://env.t3.gg/docs/introduction) adds Zod-based schema validation, a hard client/server split enforced at the module level, and a `skipValidation` flag for CI environments where not all secrets are present.
 
@@ -130,7 +130,7 @@ const res = await fetch("...", {
   headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` }, // undefined in prod?
 })
 
-// Don't check for undefined at call sites — that's the env module's job
+// Don't check for undefined at call sites; that's the env module's job
 if (!process.env.OPENAI_API_KEY) throw new Error("...")
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 ```
