@@ -21,7 +21,7 @@ Lets the agent interact with an iOS or Android simulator — launch the app, tap
 
 **Primary:** `agent-device`
 
-**Alternative MCP:** `xcodebuildmcp` — wraps `xcodebuild` and `simctl` to build, install, and control iOS simulators
+**Alternative MCP:** `xcodebuildmcp` — wraps `xcodebuild` and `simctl` to build, install, and control iOS simulators (https://github.com/getsentry/XcodeBuildMCP)
 
 Use when:
 - Verifying a mobile UI change on the simulator
@@ -62,7 +62,7 @@ MCP servers are configured per-machine in your agent's global settings, or per-p
     },
     "xcodebuildmcp": {
       "command": "npx",
-      "args": ["-y", "xcodebuildmcp"]
+      "args": ["-y", "xcodebuildmcp@latest", "mcp"]
     }
   }
 }
