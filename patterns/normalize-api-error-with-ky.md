@@ -1,29 +1,38 @@
 # Normalize API Errors with ky
 
-When calling external APIs, two distinct error types can occur. They have different audiences and must be handled differently:
+## The Three Errors at API Boundary
 
-| Error | Class | Audience | Action |
-|---|---|---|---|
-| Non-2xx response | `HTTPError` | User | Show message based on status |
-| Schema mismatch | `SchemaValidationError` | Developer | Report to error tracker, fix immediately |
+Every error that can occur when calling an external API falls into one of three categories. Each has a different cause, a different audience, and a different handling strategy:
 
-The user can act on an HTTP error (wrong credentials, resource not found, rate limited). They can't act on a schema mismatch — the API changed shape, and you need to fix the code. From the user's perspective it's just "something went wrong", but your error tracker must surface it with full detail so you find it immediately.
+| Error | Class | Cause | User sees | Dev action |
+|---|---|---|---|---|
+| `APINetworkError` | `HTTPError` + `TypeError` | HTTP layer — 4xx, 5xx, timeout, DNS failure | Actionable message (401 → "log in", 429 → "slow down") | Usually none, it's expected |
+| `APIBusinessError` | Custom | API logic — quota exceeded, already exists, invalid input | Specific message from the API | Usually none, handle in UI |
+| `APIResultError` | `SchemaValidationError` | Response shape changed unexpectedly | "Something went wrong" | Fix immediately — API drifted |
+
+**`APINetworkError`** — the transport layer failed or the server rejected the request. The user may have caused it (wrong credentials, rate limited) or it's transient (timeout, server down). Either way it's expected and recoverable.
+
+**`APIBusinessError`** — the request succeeded at the HTTP level but the API returned a documented error: quota exceeded, resource already exists, validation failed. The API contract defines these explicitly. The user can act on them.
+
+**`APIResultError`** — the request succeeded and the API returned 2xx, but the response shape doesn't match the schema. This is never expected. The API changed without notice, or the schema is wrong. The user can't act on it — you need to fix the code. Report it to the error tracker immediately.
+
+Note: `APINetworkError` has two sub-flavours with slightly different behaviour in ky — HTTP errors (4xx/5xx, caught by `beforeError`) and true network errors (timeout, DNS, connection refused, thrown as `TypeError` and not caught by `beforeError`). Both mean "transport layer failed" and are usually handled the same way, but timeout vs 401 may need different user messages.
 
 ## Normalizing HTTP errors at the instance level
 
-Use the `beforeError` hook on the ky instance to convert `HTTPError` into your own `APIResultError`. Every request on the instance gets this automatically — no wrapper, no per-call try/catch.
+Use the `beforeError` hook on the ky instance to convert `HTTPError` into your own `APINetworkError`. Every request on the instance gets this automatically — no wrapper, no per-call try/catch.
 
 ```ts
 // src/lib/api.ts
-import ky, { HTTPError } from "ky"
+import ky from "ky"
 
-export class APIResultError extends Error {
+export class APINetworkError extends Error {
   constructor(
     public readonly status: number,
     public readonly body: unknown
   ) {
-    super(`API error: ${status}`)
-    this.name = "APIResultError"
+    super(`Network error: ${status}`)
+    this.name = "APINetworkError"
   }
 }
 
@@ -32,7 +41,7 @@ export const api = ky.create({
   hooks: {
     beforeError: [
       (error) => {
-        throw new APIResultError(error.response.status, error.data)
+        throw new APINetworkError(error.response.status, error.data)
       },
     ],
   },
@@ -65,17 +74,47 @@ export async function getRepo(owner: string, name: string) {
 
 Call sites stay clean. No try/catch, no wrapper function.
 
+## Handling business errors
+
+When an API uses 200 for everything (envelope pattern), use a discriminated union schema and unwrap it in the wrapper function:
+
+```ts
+// src/lib/github.ts
+export class APIBusinessError extends Error {
+  constructor(
+    public readonly code: string,
+    message: string
+  ) {
+    super(message)
+    this.name = "APIBusinessError"
+  }
+}
+
+const RepoResponseSchema = z.discriminatedUnion("ok", [
+  z.object({ ok: z.literal(true), data: RepoSchema }),
+  z.object({ ok: z.literal(false), code: z.string(), message: z.string() }),
+])
+
+export async function getRepo(owner: string, name: string) {
+  const result = await api.get(`repos/${owner}/${name}`).json(RepoResponseSchema)
+  if (!result.ok) throw new APIBusinessError(result.code, result.message)
+  return result.data  // typed as z.infer<typeof RepoSchema>
+}
+```
+
+Callers get clean typed data. `APIBusinessError` surfaces in the global handler with enough detail to show a specific message.
+
 ## Wiring to the global error handler
 
-The two error types must be handled in the global error handler. This is the only place `SchemaValidationError` needs to be caught:
+All three error types converge in the global error handler. `SchemaValidationError` (ky's own class for shape mismatches) is the only place where a ky class surfaces — everything else is your own:
 
 ```ts
 // src/lib/on-error.ts
 import { SchemaValidationError } from "ky"
-import { APIResultError } from "@/lib/api"
+import { APINetworkError, APIBusinessError } from "@/lib/api"
 
 export function onError(err: unknown) {
-  if (err instanceof APIResultError) {
+  if (err instanceof APINetworkError) {
     // User-facing: map status to message
     if (err.status === 401) return "Not authenticated"
     if (err.status === 403) return "Not allowed"
@@ -84,30 +123,30 @@ export function onError(err: unknown) {
     return "Something went wrong"
   }
 
+  if (err instanceof APIBusinessError) {
+    // User-facing: specific message from the API
+    return err.message
+  }
+
   if (err instanceof SchemaValidationError) {
     // Dev-facing: report with full detail, show generic message to user
     reportToErrorTracker(err, { issues: err.issues })
     return "Something went wrong"
   }
 
-  // Unknown — rethrow or report
   throw err
 }
 ```
 
-`SchemaValidationError` intentionally does not extend `KyError` — ky itself draws the boundary between HTTP concerns and data concerns. The global handler mirrors that same boundary.
-
-## Why not normalize SchemaValidationError into APIResultError
-
-`SchemaValidationError` bypasses the `beforeError` hook because it is not an HTTP error — it is thrown after the response is received and parsed, during schema validation. There is no ky hook that intercepts it, which reflects its nature: it is a code problem, not a network problem. Treating it differently in the error handler makes that distinction explicit.
+`SchemaValidationError` intentionally does not extend `KyError` — ky itself draws the boundary between HTTP concerns and data concerns. It bypasses the `beforeError` hook because it is thrown after the response is received and parsed, during schema validation. There is no ky hook that intercepts it. The global handler is the only place it needs to be caught.
 
 ## File structure
 
 ```
 src/
   lib/
-    api.ts        # ky instance with beforeError hook, APIResultError class
-    on-error.ts   # global error handler, handles APIResultError + SchemaValidationError
+    api.ts        # ky instance with beforeError hook, APINetworkError + APIBusinessError classes
+    on-error.ts   # global error handler — APINetworkError, APIBusinessError, SchemaValidationError
     github.ts     # uses api instance, .json(Schema) for typed + validated responses
     resend.ts     # same pattern
 ```
