@@ -1,22 +1,6 @@
 # Normalize API Errors with ky
 
-## The Three Errors at API Boundary
-
-Every error that can occur when calling an external API falls into one of three categories. Each has a different cause, a different audience, and a different handling strategy:
-
-| Error | Class | Cause | User sees | Dev action |
-|---|---|---|---|---|
-| `APINetworkError` | `HTTPError` + `TypeError` | HTTP layer — 4xx, 5xx, timeout, DNS failure | Actionable message (401 → "log in", 429 → "slow down") | Usually none, it's expected |
-| `APIBusinessError` | Custom | API logic — quota exceeded, already exists, invalid input | Specific message from the API | Usually none, handle in UI |
-| `APIResultError` | `SchemaValidationError` | Response shape changed unexpectedly | "Something went wrong" | Fix immediately — API drifted |
-
-**`APINetworkError`** — the transport layer failed or the server rejected the request. The user may have caused it (wrong credentials, rate limited) or it's transient (timeout, server down). Either way it's expected and recoverable.
-
-**`APIBusinessError`** — the request succeeded at the HTTP level but the API returned a documented error: quota exceeded, resource already exists, validation failed. The API contract defines these explicitly. The user can act on them.
-
-**`APIResultError`** — the request succeeded and the API returned 2xx, but the response shape doesn't match the schema. This is never expected. The API changed without notice, or the schema is wrong. The user can't act on it — you need to fix the code. Report it to the error tracker immediately.
-
-Note: `APINetworkError` has two sub-flavours with slightly different behaviour in ky — HTTP errors (4xx/5xx, caught by `beforeError`) and true network errors (timeout, DNS, connection refused, thrown as `TypeError` and not caught by `beforeError`). Both mean "transport layer failed" and are usually handled the same way, but timeout vs 401 may need different user messages.
+When calling external APIs, errors need to be normalized into consistent types so the global error handler can respond correctly without coupling to ky internals.
 
 ## Normalizing HTTP errors at the instance level
 
@@ -73,6 +57,24 @@ export async function getRepo(owner: string, name: string) {
 ```
 
 Call sites stay clean. No try/catch, no wrapper function.
+
+## The Three Errors at API Boundary
+
+Every error that can occur when calling an external API falls into one of three categories. Each has a different cause, a different audience, and a different handling strategy:
+
+| Error | Class | Cause | User sees | Dev action |
+|---|---|---|---|---|
+| `APINetworkError` | `HTTPError` + `TypeError` | HTTP layer — 4xx, 5xx, timeout, DNS failure | Actionable message (401 → "log in", 429 → "slow down") | Usually none, it's expected |
+| `APIBusinessError` | Custom | API logic — quota exceeded, already exists, invalid input | Specific message from the API | Usually none, handle in UI |
+| `APIResultError` | `SchemaValidationError` | Response shape changed unexpectedly | "Something went wrong" | Fix immediately — API drifted |
+
+**`APINetworkError`** — the transport layer failed or the server rejected the request. The user may have caused it (wrong credentials, rate limited) or it's transient (timeout, server down). Either way it's expected and recoverable.
+
+**`APIBusinessError`** — the request succeeded at the HTTP level but the API returned a documented error: quota exceeded, resource already exists, validation failed. The API contract defines these explicitly. The user can act on them.
+
+**`APIResultError`** — the request succeeded and the API returned 2xx, but the response shape doesn't match the schema. This is never expected. The API changed without notice, or the schema is wrong. The user can't act on it — you need to fix the code. Report it to the error tracker immediately.
+
+Note: `APINetworkError` has two sub-flavours with slightly different behaviour in ky — HTTP errors (4xx/5xx, caught by `beforeError`) and true network errors (timeout, DNS, connection refused, thrown as `TypeError` and not caught by `beforeError`). Both mean "transport layer failed" and are usually handled the same way, but timeout vs 401 may need different user messages.
 
 ## Handling business errors
 
