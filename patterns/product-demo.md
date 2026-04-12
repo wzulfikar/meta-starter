@@ -1,8 +1,8 @@
 # Product Demo
 
-Tools for creating polished visuals for demos, App Store listings, landing pages, and press kits. These are Mac apps — use them after the feature is built and working in the simulator.
+Tools for creating polished visuals for demos, App Store listings, landing pages, and press kits. These are Mac apps; use them after the feature is built and working in the simulator.
 
-## Screen recording — RocketSim
+## Screen recording: RocketSim
 
 **RocketSim** records the iOS simulator and produces clean, professional video output. Adds device frames, touch indicators, and removes the simulator chrome so the recording looks like it was shot on a real device.
 
@@ -17,7 +17,7 @@ Workflow:
 3. Record the interaction
 4. Export with device frame
 
-## Screenshots with mockup — TinyShot
+## Screenshots with mockup: TinyShot
 
 **TinyShot** takes simulator screenshots and wraps them in beautiful device mockups. Faster than doing it in Figma or Photoshop.
 
@@ -32,7 +32,7 @@ Workflow:
 3. Choose device frame and background
 4. Export
 
-## App Store screenshots — Butterkit
+## App Store screenshots: Butterkit
 
 **Butterkit** generates App Store screenshots at all required sizes and localizations. Lets you design a template once and render it across every device size Apple requires (6.9", 6.5", 5.5", iPad, etc.).
 
@@ -57,6 +57,6 @@ Workflow:
 
 ## Notes
 
-- All three tools work with the iOS simulator — get the feature polished there before capturing
+- All three tools work with the iOS simulator; get the feature polished there before capturing
 - RocketSim and TinyShot are useful throughout development; Butterkit is primarily a pre-release task
 - Keep raw simulator screenshots alongside exports in case you need to re-render with a different frame or layout

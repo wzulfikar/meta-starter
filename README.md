@@ -1,10 +1,10 @@
 # Meta Starter
 
-A curated inventory of code patterns, tooling choices, and architectural decisions accumulated from real projects. When starting a new project, point your AI agent here — it will interview you and decide what to include.
+A curated inventory of code patterns, tooling choices, and architectural decisions accumulated from real projects. When starting a new project, point your AI agent here; it will interview you and decide what to include.
 
 ## The idea
 
-This is a **subtractive** approach to project setup: everything you've ever used is in this repo. When you start a new project, the agent reads this inventory, interviews you about what you need, and removes what doesn't apply. You end up with exactly what fits — nothing more.
+This is a **subtractive** approach to project setup: everything you've ever used is in this repo. When you start a new project, the agent reads this inventory, interviews you about what you need, and removes what doesn't apply. You end up with exactly what fits; nothing more.
 
 ## Setup (one time)
 
@@ -76,6 +76,6 @@ These apply across all templates:
 
 ## Optional features (decided per project)
 
-- **Supabase** — auth and database
-- **Autumn** — billing and payments
-- **Rate limiting** — for public-facing APIs
+- **Supabase**: auth and database
+- **Autumn**: billing and payments
+- **Rate limiting**: for public-facing APIs

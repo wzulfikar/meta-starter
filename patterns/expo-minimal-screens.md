@@ -8,7 +8,7 @@ Every Expo app needs exactly two screens to be useful. Everything else is option
 
 Where the user gets the core value of the app. This is the first screen after onboarding (or after launch if there's no onboarding).
 
-Keep it focused — one primary action or flow. Don't turn the home screen into a dashboard with many features. A user who opens the app should immediately understand what to do.
+Keep it focused: one primary action or flow. Don't turn the home screen into a dashboard with many features. A user who opens the app should immediately understand what to do.
 
 ```
 App launch
@@ -24,13 +24,13 @@ Everything that configures the app. Accessible from Home (usually a gear icon in
 
 - App-level toggles and preferences
 - Account / profile section (if the app has auth)
-- **Feedback trigger** — opens the in-app feedback widget so users can send questions or reports without leaving the app
-- **"Show Onboarding"** button — lets users replay the onboarding any time. Useful for new features and for users who want a refresher
+- **Feedback trigger**: opens the in-app feedback widget so users can send questions or reports without leaving the app
+- **"Show Onboarding"** button: lets users replay the onboarding any time. Useful for new features and for users who want a refresher
 - App version number at the bottom (helpful for bug reports)
 
 ## Composable settings UI
 
-Settings screens are inherently repetitive — many rows with the same structure but different content. Build a small set of composable components once and compose everything from them.
+Settings screens are inherently repetitive: many rows with the same structure but different content. Build a small set of composable components once and compose everything from them.
 
 ### SettingRow
 
@@ -192,6 +192,6 @@ src/
 
 ## Notes
 
-- Export `SettingRow`, `SettingRowsGroup`, and `SettingSectionLabel` from a single `src/components/settings/index.ts` barrel — settings screen imports are cleaner
-- The `type` discriminated union on `SettingRow` means TypeScript enforces the right props for each variant — no runtime surprises
+- Export `SettingRow`, `SettingRowsGroup`, and `SettingSectionLabel` from a single `src/components/settings/index.ts` barrel; settings screen imports are cleaner
+- The `type` discriminated union on `SettingRow` means TypeScript enforces the right props for each variant; no runtime surprises
 - Keep the settings components pure and presentational; all logic (toggling state, triggering feedback, replaying onboarding) lives in the screen

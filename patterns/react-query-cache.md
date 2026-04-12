@@ -1,13 +1,13 @@
 # React Query Cache Pattern
 
-The goal is instant-feeling navigation and interaction. Data loads once, gets cached, and subsequent views show immediately. Mutations feel instant too — update the cache first, let the server catch up in the background.
+The goal is instant-feeling navigation and interaction. Data loads once, gets cached, and subsequent views show immediately. Mutations feel instant too; update the cache first, let the server catch up in the background.
 
 ## The rules
 
-1. **Show a loading indicator only on first load** — when there is no cached data yet
-2. **On subsequent visits show cached data immediately** — no spinner, no layout shift. Stale data is fine; React Query refetches in the background and updates the UI if the new data differs
-3. **Use optimistic updates for mutations** — apply the change to the cache immediately on user action, before the server responds
-4. **Clear the cache on logout** — so the next user session starts fresh
+1. **Show a loading indicator only on first load**: when there is no cached data yet
+2. **On subsequent visits show cached data immediately**: no spinner, no layout shift. Stale data is fine; React Query refetches in the background and updates the UI if the new data differs
+3. **Use optimistic updates for mutations**: apply the change to the cache immediately on user action, before the server responds
+4. **Clear the cache on logout**: so the next user session starts fresh
 
 ## QueryClient setup
 
@@ -29,11 +29,11 @@ export const queryClient = new QueryClient({
 })
 ```
 
-Tune `staleTime` per query if needed — some data changes rarely (user profile), some changes often (notifications).
+Tune `staleTime` per query if needed; some data changes rarely (user profile), some changes often (notifications).
 
 ## Showing the loading state
 
-Use `isPending` not `isFetching` for the loading indicator. `isPending` is true only when there is no cached data at all. `isFetching` is true on every fetch including background refreshes — using it would show a spinner on every refocus, defeating the whole pattern.
+Use `isPending` not `isFetching` for the loading indicator. `isPending` is true only when there is no cached data at all. `isFetching` is true on every fetch including background refreshes; using it would show a spinner on every refocus, defeating the whole pattern.
 
 ```ts
 const { data, isPending, isFetching } = useQuery({
@@ -51,7 +51,7 @@ return (
 )
 ```
 
-The small refresh indicator on `isFetching` is optional — a subtle spinner in the corner or a progress bar is fine, but the content should already be visible.
+The small refresh indicator on `isFetching` is optional: a subtle spinner in the corner or a progress bar is fine, but the content should already be visible.
 
 ## Per-query staleTime
 
@@ -89,7 +89,7 @@ export async function logout() {
 }
 ```
 
-Don't just redirect — clear first, then redirect. Otherwise briefly mounted components in the new page can read stale data from the previous user's session.
+Don't just redirect; clear first, then redirect. Otherwise briefly mounted components in the new page can read stale data from the previous user's session.
 
 ## Prefetching for instant navigation
 
@@ -112,7 +112,7 @@ function PostLink({ postId }: { postId: string }) {
 
 ## Optimistic updates with setQueryData
 
-Reads feel instant because of caching. Mutations can feel instant too — update the cache immediately when the user acts, then let the server confirm in the background. If the server fails, roll back.
+Reads feel instant because of caching. Mutations can feel instant too; update the cache immediately when the user acts, then let the server confirm in the background. If the server fails, roll back.
 
 ```ts
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -155,7 +155,7 @@ function useLikePost() {
 }
 ```
 
-Usage in a component — no loading state needed for the interaction itself:
+Usage in a component: no loading state needed for the interaction itself:
 
 ```tsx
 function PostCard({ post }: { post: Post }) {

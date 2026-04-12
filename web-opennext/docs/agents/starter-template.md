@@ -55,17 +55,17 @@ Add these scripts:
 
 ## Icons and animation
 
-- `lucide-react` — general UI icons (already in supa-next-starter)
-- `lucide-animated` — animated variants of lucide icons (https://lucide-animated.com)
-- `@icons-pack/react-simple-icons` — brand SVG icons (GitHub, Twitter, Stripe, etc.)
-- `motion` — animation library (https://motion.dev); replaces framer-motion
+- `lucide-react`: general UI icons (already in supa-next-starter)
+- `lucide-animated`: animated variants of lucide icons (https://lucide-animated.com)
+- `@icons-pack/react-simple-icons`: brand SVG icons (GitHub, Twitter, Stripe, etc.)
+- `motion`: animation library (https://motion.dev); replaces framer-motion
 
 ## Data fetching and state
 
-- `@tanstack/react-query` — async data fetching, caching, and server state
-- `@legendapp/state` — global/shared state management; fine-grained reactivity
+- `@tanstack/react-query`: async data fetching, caching, and server state
+- `@legendapp/state`: global/shared state management; fine-grained reactivity
 
 ## Toast and drawers
 
-- `sonner` — toast notifications (already included above)
-- `vaul` — bottom sheet / drawer for web (already included above)
+- `sonner`: toast notifications (already included above)
+- `vaul`: bottom sheet / drawer for web (already included above)

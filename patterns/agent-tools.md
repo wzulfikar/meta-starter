@@ -4,11 +4,11 @@ Essential tools that extend what an agent can do beyond reading and writing file
 
 ## Browser control
 
-Lets the agent open URLs, click, fill forms, take screenshots, and inspect the page — useful for verifying UI changes, testing flows, and debugging rendering issues.
+Lets the agent open URLs, click, fill forms, take screenshots, and inspect the page, useful for verifying UI changes, testing flows, and debugging rendering issues.
 
 **Primary:** `agent-browser`
 
-**Alternative MCP:** `chrome` — connects to a running Chrome instance via Chrome DevTools Protocol
+**Alternative MCP:** `chrome`: connects to a running Chrome instance via Chrome DevTools Protocol
 
 Use when:
 - Verifying that a UI change looks correct before marking a task done
@@ -17,11 +17,11 @@ Use when:
 
 ## Device / simulator control
 
-Lets the agent interact with an iOS or Android simulator — launch the app, tap, scroll, take screenshots, and read the screen state.
+Lets the agent interact with an iOS or Android simulator: launch the app, tap, scroll, take screenshots, and read the screen state.
 
 **Primary:** `agent-device`
 
-**Alternative MCP:** `xcodebuildmcp` — wraps `xcodebuild` and `simctl` to build, install, and control iOS simulators (https://github.com/getsentry/XcodeBuildMCP)
+**Alternative MCP:** `xcodebuildmcp`: wraps `xcodebuild` and `simctl` to build, install, and control iOS simulators (https://github.com/getsentry/XcodeBuildMCP)
 
 Use when:
 - Verifying a mobile UI change on the simulator
@@ -30,7 +30,7 @@ Use when:
 
 ## GitHub
 
-Lets the agent read and write GitHub resources — issues, pull requests, comments, CI status, file contents from any branch.
+Lets the agent read and write GitHub resources: issues, pull requests, comments, CI status, file contents from any branch.
 
 **MCP:** `github` (official GitHub MCP server)
 
@@ -90,4 +90,4 @@ MCP servers are configured per-machine in your agent's global settings, or per-p
 |------|---------|---------|-----------------|
 | Browser control | Verify UI, test flows | `agent-browser` | `chrome` |
 | Simulator control | Verify mobile UI, debug on device | `agent-device` | `xcodebuildmcp` |
-| GitHub | Research issues, read PRs, check CI | — | `github` |
+| GitHub | Research issues, read PRs, check CI | (none) | `github` |

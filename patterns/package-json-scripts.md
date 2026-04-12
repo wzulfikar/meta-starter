@@ -14,7 +14,7 @@ What this maps to depends on the platform:
 |----------|---------------------|
 | Web (Next.js) | `next dev` |
 | Desktop (Wails) | `wails dev` |
-| Expo (iOS/Android) | typically an alias — see below |
+| Expo (iOS/Android) | typically an alias; see below |
 
 For a **monorepo-style project** where a mobile app has a companion web app in `web/`:
 
@@ -46,7 +46,7 @@ Uses `tsgo` (`@typescript/native-preview`). Never `tsc` directly.
 
 ### `bun check`
 
-Run formatter and linter. Does not auto-fix — just reports.
+Run formatter and linter. Does not auto-fix; just reports.
 
 ```json
 { "check": "biome check" }
@@ -72,7 +72,7 @@ Run all tests in the project. If the repo has split test runners (e.g. `bun test
 }
 ```
 
-**Does not include slow tests** — no e2e (Playwright, Cypress) and no mobile UI tests (Maestro). Those run in CI or on demand:
+**Does not include slow tests**: no e2e (Playwright, Cypress) and no mobile UI tests (Maestro). Those run in CI or on demand:
 
 ```json
 {
@@ -93,7 +93,7 @@ Run the default build for the repo.
 { "build": "expo export" }         // expo (static/web export)
 ```
 
-Note: use `bun run build` not `bun build` — `bun build` is Bun's bundler command, not the project's build script.
+Note: use `bun run build` not `bun build`; `bun build` is Bun's bundler command, not the project's build script.
 
 ---
 
@@ -123,7 +123,7 @@ Send an over-the-air update without going through a full build + store submissio
 { "ota": "eas update --branch production" }
 ```
 
-Desktop OTA is project-specific — document the actual command in that project's `AGENTS.md`.
+Desktop OTA is project-specific; document the actual command in that project's `AGENTS.md`.
 
 ---
 

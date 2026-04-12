@@ -5,7 +5,7 @@ Applies to any project in this repo: web, mobile, desktop.
 
 ## Why lefthook over husky
 
-- Single binary, no Node.js dependency — works in Go projects too (desktop-wails)
+- Single binary, no Node.js dependency; works in Go projects too (desktop-wails)
 - Runs jobs in parallel by default
 - Supports `{staged_files}` so pre-commit only touches files you actually changed
 - No shell scripts needed, config is just YAML
@@ -16,8 +16,8 @@ Two hooks, two distinct jobs:
 
 | Hook | Runs | Why |
 |------|------|-----|
-| `pre-commit` | biome check on staged files only | Fast — catches formatting/lint issues before they land |
-| `pre-push` | tsgo (full type-check) + bun test | Slower — only runs when sharing code with others |
+| `pre-commit` | biome check on staged files only | Fast: catches formatting/lint issues before they land |
+| `pre-push` | tsgo (full type-check) + bun test | Slower: only runs when sharing code with others |
 
 Keeping them separate means `git commit` stays instant while `git push` is the safety net.
 
@@ -40,7 +40,7 @@ pre-push:
       glob: "*.{ts,tsx}"
 ```
 
-`bun fix` runs `biome check --write --unsafe` on the staged files only — it auto-fixes what it can, so you rarely see failures.
+`bun fix` runs `biome check --write --unsafe` on the staged files only; it auto-fixes what it can, so you rarely see failures.
 
 `bun type-check` runs `tsgo` across the whole project.
 
