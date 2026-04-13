@@ -13,11 +13,10 @@ The result is a collection of patterns that are low-maintenance (update when I n
 ## The snowball
 
 ```
-more projects
-  → more experience
-    → more things to add to meta-starter
-      → implement more projects faster
-        → more projects
+more projects ←──────────────────────────┐
+  → more experience                      │
+    → more things to add to meta-starter │
+      → implement tasks faster ──────────┘
 ```
 
 Each project feeds the next. The patterns compound.
