@@ -90,6 +90,7 @@ The `patterns/` folder contains cross-platform patterns you should apply when se
 | `patterns/react-query-cache.md` | Web / Mobile: show cached data instantly, load indicator on first fetch only, clear on logout |
 | `patterns/expo-minimal-screens.md` | Mobile: two required screens (Home, Settings) and composable settings UI components |
 | `patterns/services.md` | All platforms: recommended services with generous free tiers (Cloudflare, Supabase, Plunk, Trigger.dev, Autumn) |
+| `patterns/gtm-stack.md` | All platforms: go-to-market components and recommended tools for research, surveys, analytics, distribution, and onboarding |
 | `patterns/encrypted-secrets.md` | All platforms: commit encrypted `.env.secrets` to git for team visibility; collaborators get the key once and stay in sync via git diffs |
 | `patterns/safe-env.md` | All platforms: import a validated env object instead of reading `process.env` directly; fail at startup with a clear error, not mid-request |
 
